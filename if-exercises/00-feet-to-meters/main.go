@@ -12,8 +12,12 @@ func main() {
 		return
 	}
 	arg := os.Args[1]
-	feet, _ := strconv.ParseFloat(arg, 64)
-	meters := feet * 0.3048
-	fmt.Printf("%g feet is %g meters.\n", feet, meters)
+
+	if feet, err := strconv.ParseFloat(arg, 64); err != nil {
+		fmt.Printf("error: '%s' is not a number.\n", arg)
+	} else {
+		meters := feet * 0.3048
+		fmt.Printf("%g feet is %g meters.\n", feet, meters)
+	}
 
 }
