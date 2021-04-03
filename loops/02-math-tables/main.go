@@ -8,6 +8,13 @@
 
 package main
 
+import (
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
+
 // ---------------------------------------------------------
 // EXERCISE: Math Tables
 //
@@ -105,4 +112,56 @@ package main
 // ---------------------------------------------------------
 
 func main() {
+	//get the commandline arguments.
+	a := os.Args
+	// lenght of the arguments
+	if l := len(a); l < 2 {
+		fmt.Println("Usage: [op=*/+-] [size]")
+		return
+	}
+
+	// check if the correct operators are passed.
+	if op := strings.IndexAny(a[1], "*/+-"); op == -1 {
+		fmt.Printf("%s is not a valid operator.\nValid ops one of: */+-", a[1])
+		return
+	}
+
+	// Check if the second argument is an integer.
+	if size, err := strconv.Atoi(a[2]); err != nil {
+		fmt.Println("Please pass an integer.\nUsage: [op=*/+-] [size]")
+	} else {
+		operator := a[1]
+
+		// Print horizontal header.
+		fmt.Printf("%5s", operator)
+		for i := 0; i <= size; i++ {
+			fmt.Printf("%5d", i)
+		}
+		fmt.Println()
+		for i := 0; i <= size; i++ {
+			fmt.Printf("%5d", i)
+			for j := 0; j <= size; j++ {
+				var result int
+				switch operator {
+				case "*":
+					result = i * j
+				case "%":
+					if j != 0 {
+						result = i % j
+					}
+				case "/":
+					if j != 0 {
+						result = i / j
+					}
+				case "+":
+					result = i + j
+				case "-":
+					result = i - j
+				}
+				fmt.Printf("%5d", result)
+			}
+			fmt.Println()
+
+		}
+	}
 }
