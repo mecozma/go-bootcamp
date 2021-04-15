@@ -57,9 +57,7 @@ func bubbleSort(arr [5]int) {
 		noSwaps = true
 		for j := 0; j < i; j++ {
 			if j < len(arr)-1 && arr[j] > arr[j+1] {
-				temp := arr[j]
-				arr[j] = arr[j+1]
-				arr[j+1] = temp
+				arr[j], arr[j+1] = arr[j+1], arr[j]
 				noSwaps = false
 			}
 		}
