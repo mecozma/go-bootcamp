@@ -8,99 +8,6 @@ import (
 )
 
 func main() {
-	// for keeping things easy to read and type-safe
-	type placeholder [5]string
-
-	zero := placeholder{
-		"███",
-		"█ █",
-		"█ █",
-		"█ █",
-		"███",
-	}
-
-	one := placeholder{
-		"██ ",
-		" █ ",
-		" █ ",
-		" █ ",
-		"███",
-	}
-
-	two := placeholder{
-		"███",
-		"  █",
-		"███",
-		"█  ",
-		"███",
-	}
-
-	three := placeholder{
-		"███",
-		"  █",
-		"███",
-		"  █",
-		"███",
-	}
-
-	four := placeholder{
-		"█ █",
-		"█ █",
-		"███",
-		"  █",
-		"  █",
-	}
-
-	five := placeholder{
-		"███",
-		"█  ",
-		"███",
-		"  █",
-		"███",
-	}
-
-	six := placeholder{
-		"███",
-		"█  ",
-		"███",
-		"█ █",
-		"███",
-	}
-
-	seven := placeholder{
-		"███",
-		"  █",
-		"  █",
-		"  █",
-		"  █",
-	}
-
-	eight := placeholder{
-		"███",
-		"█ █",
-		"███",
-		"█ █",
-		"███",
-	}
-
-	nine := placeholder{
-		"███",
-		"█ █",
-		"███",
-		"  █",
-		"███",
-	}
-
-	separator := placeholder{
-		"   ",
-		" ░ ",
-		"   ",
-		" ░ ",
-		"   ",
-	}
-
-	// array to hold all the digits.
-	digits := [...]placeholder{zero, one, two, three, four, five, six, seven, eight, nine, separator}
 
 	// Clear the screen.
 	screen.Clear()
@@ -113,6 +20,7 @@ func main() {
 		h := now.Hour()
 		m := now.Minute()
 		s := now.Second()
+		ss := now.Nanosecond() / 1e8
 
 		// Clock array.
 		clock := [...]placeholder{
@@ -121,11 +29,13 @@ func main() {
 			digits[m/10], digits[m%10],
 			separator,
 			digits[s/10], digits[s%10],
+			dot,
+			digits[ss],
 		}
 		for line := range clock[0] {
 			for index, digit := range clock {
 				blink := clock[index][line]
-				if digit == separator && s%2 == 0 {
+				if (digit == separator || digit == dot) && s%2 == 0 {
 					blink = "   "
 				}
 				fmt.Print(blink, "  ")
@@ -133,7 +43,8 @@ func main() {
 			fmt.Println()
 		}
 		fmt.Println()
-		time.Sleep(time.Second)
+
+		time.Sleep(time.Second / 10)
 
 	}
 }
