@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"time"
+
+	"github.com/inancgumus/screen"
 )
 
 func main() {
@@ -94,44 +96,44 @@ func main() {
 		" ░ ",
 		"   ",
 		" ░ ",
+		"   ",
 	}
 
 	// array to hold all the digits.
-	digits := [...]placeholder{zero, one, two, three, four, five, six, seven, eight, nine}
+	digits := [...]placeholder{zero, one, two, three, four, five, six, seven, eight, nine, separator}
 
-	// Get the current time.
-	t := time.Now()
-
-	h := t.Hour()
-	m := t.Second()
-	s := t.Second()
-
-	// Clock array.
-	clock := [...]placeholder{
-		digits[h/10], digits[h%10],
-		separator,
-		digits[m/10], digits[m%10],
-		separator,
-		digits[s/10], digits[s%10],
-	}
-
-	// Print the digits
 	// Clear the screen.
-	fmt.Print("\033[2J")
+	screen.Clear()
+
+	//Print the clock.
 	for {
-		fmt.Print("\033[H")
-		for v := range clock[0] {
-			for j := range clock {
-				//bl := clock[j][v]
-				//if digit == separator && s%2 == 0 {
-				//	bl = "   "
-				//}
-				fmt.Print(clock[j][v], " ")
+		screen.MoveTopLeft()
+		// Get the current time.
+		now := time.Now()
+		h := now.Hour()
+		m := now.Minute()
+		s := now.Second()
+
+		// Clock array.
+		clock := [...]placeholder{
+			digits[h/10], digits[h%10],
+			separator,
+			digits[m/10], digits[m%10],
+			separator,
+			digits[s/10], digits[s%10],
+		}
+		for line := range clock[0] {
+			for index, digit := range clock {
+				blink := clock[index][line]
+				if digit == separator && s%2 == 0 {
+					blink = "   "
+				}
+				fmt.Print(blink, "  ")
 			}
 			fmt.Println()
 		}
 		fmt.Println()
 		time.Sleep(time.Second)
-	}
 
+	}
 }
